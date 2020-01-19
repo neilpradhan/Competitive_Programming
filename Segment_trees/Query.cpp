@@ -4,24 +4,23 @@ using namespace std;
 
 
 int  query(int* tree,int start,int end,int left, int right, int nodeindex){
-    if ((start<left && end<left) || (start>right && end>right)){
+    if (start<left  || start>right){
         //out of range
         return 0;
-    }
-    
-    
-    if ((left<start<right) || (left<end<right)){
-        // partially in range
-        int mid = (start + end)/2;
-        return query(tree,start,mid,left,right, 2*nodeindex)
-        +query(tree,mid+1,end,left,right,2*nodeindex +1);
-
     }
     
     if ((start<left) && (end<right)){
         return tree[nodeindex];
     }
     
+    
+        // partially in range
+        int mid = (start + end)/2;
+        int ans1 = query(tree,start,mid,left,right, 2*nodeindex);
+        int ans2 = query(tree,mid+1,end,left,right,2*nodeindex +1);
+
+        return ans1 + ans2;
+
     
     
     
