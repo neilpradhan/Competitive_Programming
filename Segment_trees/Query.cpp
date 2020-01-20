@@ -94,7 +94,7 @@ int main(){
     // cout<<"see the arr";
     
     
-    
+    // queries are for interval sums;
     int ans  = query(tree,0,9,0,3, 1);
     cout<<ans;
     
