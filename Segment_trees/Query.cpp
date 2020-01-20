@@ -4,12 +4,13 @@ using namespace std;
 
 
 int  query(int* tree,int start,int end,int left, int right, int nodeindex){
-    if (start<left  || start>right){
+    if (end<=left  || start>=right){
         //out of range
         return 0;
     }
-    
-    if ((start<left) && (end<right)){
+        
+    if ((start>=left) && (end<=right)){
+        // completely within
         return tree[nodeindex];
     }
     
@@ -77,7 +78,7 @@ int main(){
     
     cout<<"\n";
     
-    update_tree(arr,tree,0,8,1,2,15);    
+    // update_tree(arr,tree,0,8,1,2,15);    
 
     
     
@@ -87,12 +88,14 @@ int main(){
         cout<<tree[i]<<" ";
         // cout<<endl;
     }
-    
+    cout<<"\n";
     
     // update_tree(arr,tree,0,8,1,2,15);
+    // cout<<"see the arr";
     
     
-    int ans  = query(tree,0,8,2,4, 1);
+    
+    int ans  = query(tree,0,9,0,3, 1);
     cout<<ans;
     
     
