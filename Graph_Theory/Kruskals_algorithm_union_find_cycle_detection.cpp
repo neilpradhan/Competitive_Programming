@@ -2,7 +2,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
+// TIME COMPLEXITY IS E.LOG(E) + E.V
 
 // int find_parent(int * parent,int obj, int V ){
     
