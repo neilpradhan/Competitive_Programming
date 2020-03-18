@@ -1,11 +1,11 @@
 #include <iostream>
 #include<vector>
-#include<unordered_map>
+#include<unordered_set>
 
 
 using namespace std;
 
-unordered<set>* dfs(int start, bool *visited, unordered<set>* un_set_one, vector<int>* edges){
+void dfs(int start, bool *visited, unordered_set<int>* un_set_one, vector<int>* edges){
     
 
 // visited unordered_set
@@ -13,13 +13,26 @@ unordered<set>* dfs(int start, bool *visited, unordered<set>* un_set_one, vector
 // we will fill visited set here
 
     visited[start] = true;
-    un_set_one.insert(start);
+    un_set_one->insert(start);
+    
+    
+    vector<int> :: iterator it;
     
     
     
     
+    for(it = edges[start].begin(); it!= edges[start].end(); it++){
     
-    dfs(edges->[start],visited,un_set_one,edges);
+    if (visited[*it] == true){
+        continue;
+    } 
+    
+    dfs(*it,visited,un_set_one,edges);
+    
+    
+    }
+    
+
     
     
     
@@ -32,23 +45,28 @@ unordered<set>* dfs(int start, bool *visited, unordered<set>* un_set_one, vector
 
 
 
-unordered_set<<unordered_set>*>* get_components(int V, vector<int>* edges){
+unordered_set<unordered_set<int>*>* get_components(int V, vector<int>* edges){
     
     
     
     bool *visited =  new bool[V]; // creating visited 
     
     
+	unordered_set<unordered_set<int>*>* output = new unordered_set<unordered_set<int>*>();
+    
     for(int i=0;i<V;i++){
-        if (visited->at(i) == false){
+        if (visited[i] == false){
             
             unordered_set<int>* un_set_one =  new unordered_set<int>;
-            
-            
-            dfs(start, unordered_set, visited, edges);
+            dfs(i, visited,un_set_one, edges);
+            output->insert(un_set_one);
         }
+        continue;
     }
+    
+    return output;
 }
+
 
 
 
@@ -62,6 +80,7 @@ int main()
  // no of vertices
  
  vector<int>* edges = new vector<int>[n];
+ // array of vectors
  
  
  int m;
@@ -74,10 +93,23 @@ int main()
 		edges[k - 1].push_back(j - 1);
  }
 
- unordered_set<<unordered_set>*>* components  = get_components()
-//  int** p = new int*[n];
+ unordered_set<unordered_set<int>*>* components  = get_components(n,edges);
 
 
+
+    unordered_set<unordered_set<int>*> :: iterator it  = components->begin();
+    
+    
+    for(;it != components->end();it++){
+        unordered_set<int>* component = *it;
+        
+        unordered_set<int> :: iterator jt  = component->begin();
+        
+        for(;jt != component->end();jt++){
+            cout<<*jt +1<<" ";
+        }
+        cout<<"\n";
+    }
 
 
 
