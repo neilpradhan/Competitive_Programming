@@ -15,15 +15,30 @@ void bfs(vector<int>*edges, int start, bool* visited, unordered_set<int>* compon
     
     while (!q.empty()){
         int f = q.front();
+        component->insert(f);
         q.pop();
         
-        component->insert(f);
+
         
-        for(int i=0;i<component->size();i++){
-             int next = edges[start][i];
-             if (!visited[next]){
-                 bfs(edges,next,visited,component);
-             }
+        // for(int i=0;i<component->size();i++){
+        //      int next = edges[start][i];
+        //      if (!visited[next]){
+        //          bfs(edges,next,visited,component);
+        //         // visited[next] = true;
+        //         // q.push(next);
+        //      }
+        // }
+        
+        
+        vector<int> :: iterator it;
+        
+        
+        
+        for(it  = edges[start].begin(); it != edges[start].end(); it++){
+            if (!visited[*it]){
+                visited[*it] = true;
+                q.push(*it);
+            }
         }
         
     }
@@ -83,8 +98,8 @@ unordered_set<unordered_set<int>*>* get_connected_components(int v,vector<int>* 
     for(int i=0;i<v;i++){
     if (!visited[i]){
         unordered_set<int>* component = new unordered_set<int>();
-        bfs(edges,i,visited, component);
-        // dfs(edges,i,visited, component);
+        // bfs(edges,i,visited, component);
+        dfs(edges,i,visited, component);
         output->insert(component);
     }
     
