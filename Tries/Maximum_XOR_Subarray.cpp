@@ -3,7 +3,7 @@
 #define BIG_NUM 1000002
 using namespace std;
 
-
+// 1 solution
 class Trie{
     public:
     Trie* left;
@@ -119,6 +119,111 @@ cin>>N;
 	return 0;
 
 
+}
+
+// 2 solution
+#include <bits/stdc++.h>
+#include <typeinfo>
+#define BIT_SIZE 21
+#define MAX_SIZE 1000002
+
+using namespace std;
+
+
+
+class trie{
+    public:
+    int cnt;
+    trie* children[2];
+    trie(){
+        cnt =0;
+        children[0] =NULL;
+        children[1] =NULL;
+        
+    }
+};
+
+trie* root;
+int A[MAX_SIZE];
+
+void insert(int val){
+    trie* node = root;
+    trie* newnode;
+    // trie temp;
+    
+    
+    for(int i=BIT_SIZE-1;i>=0;i--){
+        bool k =(val>> i) & 1;
+        if (node->children[k]==NULL){
+            newnode = new trie;
+            newnode->cnt =1;
+            node->children[k] = newnode;
+        }
+        else{
+            node->children[k]->cnt++;
+        }
+        node = node->children[k];
+
+    }
+
+}
+    
+
+long long int query(int val){
+    
+    
+    long long ans= 0;
+    int i=BIT_SIZE -1;
+    trie* node =root;
+    if (root==NULL){
+        return 0;
+    }
+    while(i>=0){
+        bool p = (val>>i) &1;
+        if (node->children[1-p]){
+            node = node->children[1-p];
+            ans = ans*2 +1;
+        }else{
+            node = node->children[p];
+            ans =ans*2;
+        }
+        i--;
+    }
+    return ans;
+}
+
+
+
+
+int main()
+{
+//   cout << "Hello World" << endl; 
+//   trie* node = root,*right,temp;
+// //   int 6;
+//   cout << typeid(root).name() << endl;
+//   cout << typeid(right).name() << endl;
+//   cout << typeid(temp).name() << endl;
+// //   cout << typeid(6).name() << endl;
+//     temp.cn =13;
+//     cout<<temp.left;
+   
+    int n, i, mxor;
+    long long ans;
+    cin>>n;
+    root = new  trie;
+    ans = 0;
+    mxor =0;
+    insert(mxor);
+    for(int i=0;i<n;i++){
+        cin>>A[i];
+        mxor = mxor ^ A[i];
+        ans = max(ans, query(mxor));
+        insert(mxor);
+    }
+    cout<<ans<<endl;
+   
+    
+   return 0;
 }
     
     
