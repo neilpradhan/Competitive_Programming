@@ -2,17 +2,23 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// TIME COMPLEXITY IS E.LOG(E) + E.V
+
 
 // int find_parent(int * parent,int obj, int V ){
     
 // }
+
+
+
+
+
 
 class edge{
     public:
     int src; // source 
     int dst; // destination
     int w; // weight
+    // vector<int> v;
     public:
     void set_edge(int source,int   destination, int weight){
 
@@ -23,8 +29,36 @@ class edge{
     
     
     void get_edge(){
-        cout<<src<<" "<<dst<<" "<<w<<endl;
+
+        
+        int minimum = min(src,dst);
+        int maximum = max(src,dst);
+        cout<<minimum<<" "<<maximum<<" "<<w<<endl;       
+        // for the sake of displaying output
+        // int minimum = min (min(src,dst),w);
+        // int maximum  = max(max(src,dst),w);
+        // if 
+        // cout<<minimum<<
+//         vector<int>  v;
+//         v.push_back(src);
+//         v.push_back(dst);
+//         v.push_back(w);
+//         sort(v.begin(), v.end());
+//         vector<int> :: iterator it = v.begin();
+        
+//         for (;it!=v.end();it++){
+//             cout<<*it<<" ";
+//         }
+//         cout<<endl;
     }
+    
+    // vector<int> sorted_edge(){
+    //     v.push_back(src);
+    //     v.push_back(dst);
+    //     v.push_back(w);
+    //     sort(v.begin(), v.end());
+    //     return v;
+    // }
     
     
 };
@@ -38,74 +72,73 @@ bool compare (class edge  e1 , class edge e2){
 
 
 
+int finding(unordered_map<int, int> & parent, int i)  
+{  
+    // find root and make root as parent of i  
+    // (path compression)  
+    if (parent[i] != i)  
+        parent[i] = finding(parent, parent[i]);  
+  
+    return parent[i];  
+} 
 
 
-
-// int find_parent(int* parent, int vertex){
-//     // vertex is source or destination
-//     // recurrsion should be positive  0 to V-1;
-//     int p = parent[vertex];
-//     while (parent[p] == p){
-//        find_parent(parent,p);
+// union(int x, int y,unordered_map<int, int> & parent ){
+    
+//     if (x<=y){
+//         parent[]
 //     }
     
-//     return p;
+    
 // }
 
-
-
-
-int get_parent(int vertex, int* parent){
-    
-    
-    while(vertex!=parent[vertex]){
-        vertex = parent[vertex];
-    }
-    return vertex;
-
-    
-}
-
-edge*  kruskals(edge* arr,int V, int E){
-    sort(arr, arr+ E, compare);
-    
-    
-    int* parent = new int[V];
-    for(int i=0;i<V;i++){
-        parent[i] = i;
-    }
-    
-    
-    edge* output = new edge[V-1];
-    
-    int count  = 0;
-    int i= 0;
-    while(count<(V-1)){
+vector<edge>* kruskals(edge* arr,int V,int E){
+    	vector<edge>* output = new vector<edge>();
         
-        edge current_edge = arr[i];
-        int src_parent = get_parent(arr[i].src,parent);
-        int dest_parent = get_parent(arr[i].dst, parent);
         
-        if (src_parent!= dest_parent){
-            output[count] = current_edge;
-            count++;
-            parent[src_parent] = dest_parent;
+        unordered_map<int, int> parent;
+        
+        for(int i=0;i<V;i++){
+            parent[i] =  i; // all vertices will have different parents
+        }
+        
+        
+        
+        
+    	sort(arr,arr+E,compare);
+        
+        int count =0;
+        int i = 0;
+        while (count<V-1 && i<E){
             
-        }
-        
-        else{
-            continue;
-        }
-        
-        i++;
-        
-        
-    }
-    
+            int src_parent = finding( parent,arr[i].src);
+            int dst_parent = finding ( parent,arr[i].dst);
+            
+            if (src_parent!=dst_parent){
+                //if (src_parent<=dst_parent){
+                     parent[dst_parent] = src_parent;                 
+                //}else{
+                //      parent[arr[i].src] = dst_parent;
+                //      parent[arr[i].dst] = dst_parent;                    
+                //}
+                
+                output->push_back(arr[i]);
+                count++;
+                //}
+             }
+             
+            
+             
+            i++;
+            }
     return output;
-    
-    
-}
+}	
+
+
+
+
+
+
 
 
 
@@ -114,7 +147,7 @@ int main()
   int V, E, tempX, tempY;
   cin >> V >> E;
    // array of edges
-   edge* arr= new edge[E];
+   edge* arr= new edge[E];// array of edges
     
     
    for(int i=0;i<E;i++){
@@ -126,71 +159,24 @@ int main()
        
    } 
     
+    vector<edge>* output = new vector<edge>();
 
-    edge* output = kruskals(arr,V,E);
+    output = kruskals(arr,V,E);
 
-//    for(int i=0;i<E;i++){
-//        arr[i].get_edge();
-//    }   
-    
-    // after we successfully put all the edges in an array we will create an array of sorted edges with weight;
-    
-    // sort(arr,arr+E, compare);
-    
-    
-    
-//     int* parent=  new int [V];
-    
-//     for (int i =0;i<V;i++){
-//         parent[i] = i;
-//     }
-    
-//     // make a find_last_parent function
-//     edge* mst =  new edge[V-1];
-//     for (int i=0;i<V;i++){
-//         mst[i].src = 0;
-//         mst[i].dst = 0;
-//         mst[i].w = 0;
-//     }
-    
-//     int count = 0;
-//     while(count==V-1){
-//         for (int i = 0;i<E;i++){
-//             // if source and destination doesnot have same parent then add it to the final result else skip it
-//             // for every edge
-//             if (find_parent(parent,arr[i].src) != find_parent(parent,arr[i].dst)){
-                
-//                 if (parent[arr[i].src] <=parent [arr[i].dst]){
-//                     parent[arr[i].dst] = parent[arr[i].src];
-//                 }
-//                 else{
-//                     parent[arr[i].src] = parent[arr[i].dst];                   
-//                 }
-                
-//                 mst[count] = arr[i]; // add edge to the final result
-//                 count++;
-//             } 
-//             else{
-//                 continue;
-//             }
-//         }
-//     }
-    
-//      for(int i=0;i<V-1;i++){
-//          mst[i].get_edge();
-//      }   
-    
-        for (int i=0;i<V-1;i++){
-            if (output[i].src<output[i].dst){
-            cout<<output[i].src<<" "<<output[i].dst<<" "<<output[i].w;
-                cout<<"\n";
-            }
-            else{
-            cout<<output[i].dst<<" "<<output[i].src<<" "<<output[i].w;
-                cout<<"\n";
-            }
 
-        }
+    // sort(arr,arr+E,compare);
+    
+    vector<edge> :: iterator it = output->begin();
+    for (;it!= output->end();it++){
+        // vector<int> v = (*it).sorted_edge();
+        // for(int i=0;i<v.end();i++){
+        //     cout<<v[i];
+        // }
+        (*it).get_edge();
+        
+    }
+		
+
 
     
     
